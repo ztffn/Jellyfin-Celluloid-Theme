@@ -10,7 +10,7 @@
 
 ---
 > [!NOTE]
-> Beta Status: This CSS theme was made for personal use. It as many rough edges, and might not look good on your syste. Progress is slow, but you are invited to try it out and post issues to help bring it along - or better yet, contribute to it. It will leave beta when I'm satisfied with the experience.
+> Beta Status: This theme was made for personal use. It has many rough edges, and might not look good on your system. Progress to make it public is slow, but you are invited to try it out and post issues to help bring it along - or better yet, contribute to it. It will leave beta when the roadmap is completed and the experience is satisfying.
     
 ## 📣 Roadmap / Status
 
@@ -22,7 +22,6 @@
 - [ ] Publish preview gallery
 - [ ] Tag v0.9.0 release & announce
 
-### ***Ready for collaborators and contributors to help improve and expand the theme.***
 ---
 
 ## 🎬 Features
@@ -33,7 +32,6 @@
 - Minimal typography and simplified web elements. Posters and movie artwork take center stage
 - Bold play buttons and clear info cues for interactable elements
 - Multiple built-in color themes (Purple and Blue) with easy switching
-- Highly customizable color scheme and UI elements
 
 
 ---
@@ -72,17 +70,16 @@ Until the packaged release is published, you can preview the theme by referencin
 
 ### Option 2 — Host Locally
 
-1. Download `Theme/celluloid.css` and place it somewhere Jellyfin can reach (e.g. `/config/custom/web/celluloid.css`).
-2. In **Dashboard → General → Custom CSS**, point to your local copy:
-   ```css
-   @import url("/custom/web/celluloid.css");
-   ```
+1. Copy the content of `Theme/celluloid.css` 
+2. In **Dashboard → Branding → Custom CSS**, paste in the full content of the css, with any modificatons you'd like:
 3. Save and refresh.
 
-> **Tip:** Keep the import as the last line if you stack multiple community themes—Celluloid expects to be loaded after any base adjustments.
+> **Note:** You won't recieve any updates automatically this way, so its not recomended until the release is more stable.
 
 ### Theme Switching
-
+> [!WARNING]
+> I haven't gotten this to work as intended. Currently only way to swap themes is by editing css. 
+> 
 Celluloid Theme comes with two built-in color themes: **Blue** (default) and **Purple**.
 
 > The stylesheet also listens for Jellyfin's own `data-theme="…"` attribute, so in 10.11+ you can trigger a switch by using Jellyfin's native theme toggles.
@@ -110,22 +107,6 @@ html { --theme-selection: purple; }
 
 ~~For more customization options, see the [customization guide](docs/customization.md).~~
 
-
----
-
-## 📁 Repository Layout
-
-```
-Jellyfin-Celluloid-Theme/
-├── Theme/
-│   ├── celluloid.css        # Core theme stylesheet (to be populated)
-│   └── assets/
-│       └── img/             # Banners, logos, promotional imagery
-├── Previews/                # Optimized screenshots & videos (coming soon)
-├── docs/                    # Additional usage notes & customization recipes
-├── LICENSE
-└── README.md
-```
 
 ---
 
@@ -189,7 +170,7 @@ Please keep new CSS tokens documented so we can maintain predictable customizati
 
 - **Theme not applying**: Make sure you've added the import as the last line in your Custom CSS and performed a hard refresh (`Ctrl + Shift + R` / `Cmd + Shift + R`).
 - **Vertical menu not showing**: The vertical menu is designed to be visible on desktop views. It will automatically hide during video playback.
-- **Light leaks not visible**: The animated light leaks are subtle by design and may vary depending on your display settings.
+- **Light leaks not visible**: The animated light leaks are subtle by design and may vary depending on your system (Does not currently work on Tizen TVs)
 
 ### Browser Compatibility
 
