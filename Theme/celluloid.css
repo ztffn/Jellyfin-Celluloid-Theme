@@ -1,12 +1,2339 @@
-/*
-  Celluloid Theme for Jellyfin
-  ---------------------------------
-  This file will contain the production CSS for the Celluloid theme.
-  For now it is a placeholder to document the expected structure.
-*/
+/* ==========================================================================
+   Celluloid Theme for Jellyfin
+   Author: Steffen Oftedal (ztffn)
+   Version: 0.5.0
+   License: MIT
+   GitHub: https://github.com/ztffn/Jellyfin-Celluloid-Theme
+   ========================================================================== */
 
-:root {
-  /* Upcoming brand tokens go here. */
+/* ==========================================================================
+   Theme Switching
+   ========================================================================== */
+/* Blue theme - add ?theme=blue to URL or set --theme-selection: blue; in CSS */
+html[data-theme="blue"],
+html[data-theme=""][class*="theme=blue"],
+html:not([data-theme])[class*="theme=blue"],
+html:where(:root[style*="--theme-selection:blue"]),
+html:where(:root[style*="--theme-selection: blue"]) {
+    --primary: var(--blue-deep-blue);
+    --light: var(--blue-white-off);
+    --deep: var(--blue-jade-green);
+    --dark: var(--blue-cherry-red);
+    --highlight: var(--blue-honey-yellow);
+    --accent: var(--blue-accent);
+    --gradient-1: var(--blue-gradient-1);
+    --gradient-2: var(--blue-gradient-2);
+    --menu-bg: var(--blue-menu-bg);
+    --menu-border: var(--blue-menu-border);
+    --gradient-point-1: var(--blue-gradient-point-1);
+    --gradient-point-2: var(--blue-gradient-point-2);
+    --gradient-point-3: var(--blue-gradient-point-3);
+    --background-gradient: var(--blue-background-gradient);
+    --darker-gradient-point: var(--blue-darker-gradient-point);
 }
 
-/* Add your theme styles below. */
+/* Purple theme - add ?theme=purple to URL or set --theme-selection: purple; in CSS */
+html[data-theme="purple"],
+html[data-theme=""][class*="theme=purple"],
+html:not([data-theme])[class*="theme=purple"],
+html:where(:root[style*="--theme-selection:purple"]),
+html:where(:root[style*="--theme-selection: purple"]),
+html:not([class*="theme="]):not(:where(:root[style*="--theme-selection:blue"]):not(:root[style*="--theme-selection: blue"])) {
+    --primary: var(--purple-primary);
+    --light: var(--purple-light);
+    --deep: var(--purple-deep);
+    --dark: var(--purple-dark);
+    --highlight: var(--purple-highlight);
+    --accent: var(--purple-accent);
+    --gradient-1: var(--purple-gradient-1);
+    --gradient-2: var(--purple-gradient-2);
+    --menu-bg: var(--purple-menu-bg);
+    --menu-border: var(--purple-menu-border);
+    --gradient-point-1: var(--purple-gradient-point-1);
+    --gradient-point-2: var(--purple-gradient-point-2);
+    --gradient-point-3: var(--purple-gradient-point-3);
+    --background-gradient: var(--purple-background-gradient);
+    --darker-gradient-point: var(--purple-darker-gradient-point);
+}
+
+/* ==========================================================================
+   Imports and Font Settings
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* ==========================================================================
+   Variables - Customization Options
+   ========================================================================== */
+:root {
+    /* Theme Selection - Default is "blue" */
+    /* To change theme, add ?theme=purple to the URL or set in Custom CSS: html { --theme-selection: blue; } */
+    /* This variable is used by the theme selectors above */
+    
+    /* Blue Theme Colors */
+    --blue-white: 243, 242, 243;           /* F3F2F3 - Used for text and highlights */
+    --blue-white-off: 207, 221, 233;       /* CFDDE9 - Used for secondary text */
+    --blue-jade-green: 0, 172, 111;        /* 00AC6F - Used for success indicators */
+    --blue-honey-yellow: 255, 194, 85;     /* FFC255 - Used for stars and warnings */
+    --blue-cherry-red: 212, 51, 83;        /* D43353 - Used for error states */
+    --blue-deep-blue: 78, 116, 247;        /* 4E74F7 - Used for links and focus states */
+    --blue-accent: var(--blue-deep-blue);   /* Main blue theme accent color */
+    --blue-gradient-1: #0f7195;
+    --blue-gradient-2: #118a6e;
+    --blue-menu-bg: rgba(0, 164, 220, 0.2);
+    --blue-menu-border: #00a4dc;
+    --blue-gradient-point-1: rgb(15, 113, 149); /* #0f7195 - First gradient point */
+    --blue-gradient-point-2: rgb(17, 138, 110); /* #118a6e - Second gradient point */
+    --blue-gradient-point-3: rgb(0, 84, 147);   /* #005493 - Third gradient point */
+    --blue-background-gradient: linear-gradient(300deg, var(--blue-gradient-point-1) 0%, 26.776%, var(--blue-gradient-point-2) 53.5519%, 76.776%, var(--blue-gradient-point-3) 100%);
+    --blue-darker-gradient-point: rgb(15, 113, 149); /* Darkest color for solid backgrounds */
+    
+    /* Purple Theme Colors */
+    --purple-primary: 140, 85, 217;         /* #8C55D9 - Primary accent color */
+    --purple-light: 193, 179, 242;          /* #C1B3F2 - Light accent color */
+    --purple-deep: 56, 47, 115;             /* #382F73 - Deep accent color */
+    --purple-dark: 34, 41, 64;              /* #222940 - Dark background color */
+    --purple-highlight: 98, 149, 217;       /* #6295D9 - Highlight color */
+    --purple-accent: var(--purple-primary);  /* Main purple theme accent color */
+    --purple-gradient-1: #8C55D9;
+    --purple-gradient-2: #382F73;
+    --purple-menu-bg: rgba(140, 85, 217, 0.2);
+    --purple-menu-border: #8C55D9;
+    --purple-gradient-point-1: rgb(32, 38, 62);  /* #20263E - First gradient point */
+    --purple-gradient-point-2: rgb(52, 43, 108); /* #342B6C - Second gradient point */
+    --purple-gradient-point-3: rgb(86, 55, 136); /* #563788 - Third gradient point */
+    --purple-background-gradient: linear-gradient(300deg, var(--purple-gradient-point-1) 0%, 26.776%, var(--purple-gradient-point-2) 53.5519%, 76.776%, var(--purple-gradient-point-3) 100%);
+    --purple-darker-gradient-point: rgb(32, 38, 62); /* Darkest color for solid backgrounds */
+    
+    /* Dynamic theme variables - These are set by the theme selectors above */
+    /* Default values if no theme is selected - these will be overridden by theme selectors */
+    --primary: var(--blue-deep-blue);
+    --light: var(--blue-white-off);
+    --deep: var(--blue-jade-green);
+    --dark: var(--blue-cherry-red);
+    --highlight: var(--blue-honey-yellow);
+    --accent: var(--blue-accent);
+    --gradient-1: var(--blue-gradient-1);
+    --gradient-2: var(--blue-gradient-2);
+    --menu-bg: var(--blue-menu-bg);
+    --menu-border: var(--blue-menu-border);
+    --gradient-point-1: var(--blue-gradient-point-1);
+    --gradient-point-2: var(--blue-gradient-point-2);
+    --gradient-point-3: var(--blue-gradient-point-3);
+    --background-gradient: var(--blue-background-gradient);
+    --darker-gradient-point: var(--blue-darker-gradient-point);
+    
+    /* Legacy color variables for backward compatibility */
+    --white: var(--blue-white);
+    --white-off: var(--blue-white-off);
+    --jade-green: var(--blue-jade-green);
+    --honey-yellow: var(--blue-honey-yellow);
+    --cherry-red: var(--blue-cherry-red);
+    --deep-blue: var(--blue-deep-blue);
+    
+    /* Uncomment the following lines to enable custom rounding throughout the UI */
+
+    --rounding: 12px;                 /* Default rounding for most elements */
+    --rounding-alt: 9px;              /* Alternative rounding for smaller elements */
+    --rounding-large: 24px;           /* Larger rounding for prominent elements */
+    --rounding-circle: 100px;         /* Full circle rounding for avatar elements */
+   
+}
+
+/* ==========================================================================
+   Global Typography
+   ========================================================================== */
+body, h1, h2, h3, h4 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 120% !important;
+}
+
+.sectionTabs {
+    font-size: 100% !important;
+}
+
+/* ==========================================================================
+   Header Styles
+   ========================================================================== */
+.skinHeader.semiTransparent,
+.skinHeader-withBackground {
+    background-color: transparent;
+}
+ /* ==========================================================================
+   Change icons 
+   ========================================================================== */ 
+/* Sort image replace */
+.material-icons.sort_by_alpha::before {
+  content: "\e8d5" !important;
+}
+/* Change trailer icon */
+.material-icons.theaters::before {
+    content: "\e02d" !important;
+  }
+
+  .material-icons.video_library:before {
+    content: "\ebbd";
+  }
+  
+  .material-icons.queue:before {
+    content: "\e1b2";
+  }
+
+/* ==========================================================================
+      Backdrop and Background
+      ========================================================================== */
+      .backdropContainer {
+        height: 100vh;
+        position: fixed;
+        width: 80vw;
+        left: 20%;
+    }
+    
+    .backdropImage {
+        background-size: cover !important;
+        background-attachment: fixed !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        height: 100% !important;
+        min-height: 100vh !important;
+        position: relative;
+    }
+    
+    /* Main page background */
+    body.withSectionTabs .backdropImage {
+         /* Was getting 404 from cdn background-image: url("https://cdn.jsdelivr.net/gh/ztffn/Jellyfin-Celluloid-Theme/Theme/assets/img/celluloid-marquee.webp") !important; */
+      background-image: url("https://raw.githubusercontent.com/ztffn/Jellyfin-Celluloid-Theme/main/Theme/assets/img/celluloid-marquee.webp") !important;
+    
+    }
+    
+    /* Detail page background */
+    .backgroundContainer.withBackdrop {
+        background-color: rgba(20, 20, 20, 0.2) !important;
+        background-image:
+            linear-gradient(to left, transparent 20%, rgba(20, 20, 20, 1) 80%, rgb(20, 20, 20) 90%),
+            linear-gradient(to bottom, transparent 40%, rgba(20, 20, 20, 0.1) 70%, rgb(20, 20, 20) 90%) !important;
+    }
+    
+    /* Detail page loading state */
+    .itemDetailPage .backdropImage.loading {
+        filter: blur(10px) saturate(100%) contrast(100%) brightness(100%) !important;
+    }
+
+    /* ==========================================================================
+      Backdrop Transitions
+      ========================================================================== */
+   
+   /* Add main backdrop overlay with gradient and film grain */
+   .backdropImage::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(-45deg, #d15631, #b9225c, #0f7195, #118a6e);
+    background-size: 400% 400%;
+    animation: gradient-anim 15s ease infinite;
+    opacity: 0;
+    z-index: 100;
+    transition: opacity 0.8s ease-out;
+}
+
+/* Show  overlay when on main page */
+body.withSectionTabs .backdropImage::before {
+    opacity: 1;
+}
+
+/* Add transition delay to hide the switch */
+body:not(.withSectionTabs) .backdropImage::before {
+    transition: opacity 1.2s ease-out 0.4s;
+}
+
+/* Ensure smooth transition */
+.backdropImageFadeIn {
+    transition: opacity 0.8s ease-out;
+}
+/* Add film grain effect */
+.backdropImage::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: .2;
+    z-index: 101;
+    pointer-events: none;
+    transition: opacity 0.8s ease-out;
+}
+
+/* Add transition delay to hide the switch */
+body:not(.withSectionTabs) .backdropImage::before,
+body:not(.withSectionTabs) .backdropImage::after {
+    transition: opacity 2s ease-out 1.5s;
+}
+
+/* Define the gradient animation */
+@keyframes gradient-anim {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+
+/* ==========================================================================
+   Light Leak Effects
+   ========================================================================== */
+
+/* These does not render correctly on my Tizen The Frame TV, should probably be flagged to desktop only, might also improve performance */
+
+/* First blob */
+.backdropImage::after {
+    content: '';
+    position: fixed !important;
+    height: 350px !important;
+    width: 400px !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 40% 50% 30% 40% !important;
+    opacity: 0;
+    top: 15% !important;
+    right: 15% !important;
+    z-index: 100 !important;
+    filter: blur(40px) brightness(1.2) !important;
+    -webkit-filter: blur(40px) brightness(1.2) !important;
+    mix-blend-mode: overlay !important;
+    animation: blob_one 18s ease-in-out infinite both alternate !important;
+    transition: opacity 0.8s ease-out !important;
+    pointer-events: none !important;
+    will-change: filter, transform, border-radius !important;
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    perspective: 1000 !important;
+    -webkit-perspective: 1000 !important;
+}
+
+/* Additional blobs using other elements */
+.libraryPage::before {
+    content: '';
+    position: fixed !important;
+    height: 200px !important;
+    width: 200px !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 33% 67% 70% 30% / 30% 40% 70% 70% !important;
+    opacity: 0;
+    top: 5% !important;
+    right: 25% !important;
+    z-index: 100 !important;
+    filter: blur(40px) brightness(1.2) !important;
+    -webkit-filter: blur(40px) brightness(1.2) !important;
+    mix-blend-mode: overlay !important;
+    animation: blob_two 15s ease-in-out infinite both alternate !important;
+    transition: opacity 0.8s ease-out !important;
+    pointer-events: none !important;
+    will-change: filter, transform, border-radius !important;
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    perspective: 1000 !important;
+    -webkit-perspective: 1000 !important;
+}
+
+.libraryPage::after {
+    content: '';
+    position: fixed !important;
+    height: 180px !important;
+    width: 160px !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 37% 63% 51% 49% / 37% 35% 35% 63% !important;
+    opacity: 0;
+    bottom: 15% !important;
+    right: 20% !important;
+    z-index: 100 !important;
+    filter: blur(40px) brightness(1.2) !important;
+    -webkit-filter: blur(40px) brightness(1.2) !important;
+    mix-blend-mode: overlay !important;
+    animation: blob_three 12s ease-in-out infinite both alternate !important;
+    transition: opacity 0.8s ease-out !important;
+    pointer-events: none !important;
+    will-change: filter, transform, border-radius !important;
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    perspective: 1000 !important;
+    -webkit-perspective: 1000 !important;
+}
+
+/* Show blobs when on main page */
+body.withSectionTabs .backdropImage::after,
+body.withSectionTabs .mainDrawer::before,
+body.withSectionTabs .mainDrawer::after {
+    opacity: 0.5 !important;
+}
+
+/* Blob animations */
+@keyframes blob_one {
+    0%, 100% { 
+        border-radius: 33% 67% 70% 30% / 30% 40% 70% 70% !important; 
+        transform: translate(0, 0) rotate(0deg) !important;
+    }
+    50% { 
+        border-radius: 37% 63% 51% 49% / 37% 35% 35% 63% !important;
+        transform: translate(-200px, 100px) rotate(180deg) !important;
+    }
+}
+
+@keyframes blob_two {
+    0%, 100% { 
+        border-radius: 36% 64% 64% 36% / 64% 48% 52% 26% !important;
+        transform: translate(0, 0) scale(1) !important;
+    }
+    50% { 
+        border-radius: 40% 60% 42% 58% / 51% 51% 49% 59% !important;
+        transform: translate(-150px, 200px) scale(1.2) !important;
+    }
+}
+
+@keyframes blob_three {
+    0%, 100% { 
+        border-radius: 37% 63% 51% 49% / 30% 30% 70% 73% !important;
+        transform: translate(0, 0) rotate(0deg) !important;
+    }
+    50% { 
+        border-radius: 33% 67% 70% 30% / 30% 40% 70% 70% !important;
+        transform: translate(180px, -150px) rotate(-180deg) !important;
+    }
+}
+    
+
+/* ==========================================================================
+   Detail Page Layout
+   ========================================================================== */
+#itemDetailPage .detailPagePrimaryContainer,
+#itemDetailPage .detailLogo,
+#itemDetailPage .detailPagePrimaryContainer .detailSectionContent {
+        padding-left: 3.5vw !important;
+    }
+
+#itemDetailPage .detailSectionContent {
+        padding-right: 35vw !important;
+}
+
+/* Logo positioning */
+.detailLogo {
+    height: 16vh;
+    width: 34em;
+    background-position: top left;
+    display: none;
+}
+
+/*Alternate itempage*/
+.itemBackdrop {
+    height: 31vh !important;
+    display: inherit;
+}
+.detailRibbon {
+    margin-top: 0;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    background: none;
+}
+.detailImageContainer .card {
+    top: 18vh;
+}
+#itemDetailPage .detailLogo {
+    position: static;
+    display: block;
+    -webkit-filter: drop-shadow(0 0 10px rgba(2, 2, 2, 0.75));
+    /*! filter: drop-shadow(0 0 10px rgba(2, 2, 2, 0.75)); */
+    flex-shrink: 0;
+    background-position: 0 50%;
+    margin-top: -1vh!important;
+    margin-bottom: 2vh;
+    margin-left: 3vh !important;
+    height: 30%;
+    max-width: 70vw!important;
+}
+#itemDetailPage .itemName.infoText.parentNameLast {
+    display: none;
+}
+.hide+.detailPageWrapperContainer .itemName {
+    display: block !important;
+}
+
+.layout-mobile #itemDetailPage .itemName.infoText.parentNameLast {
+    display: block;
+}
+/* Title visibility */
+#itemDetailPage .itemName.infoText.parentNameLast > bdi:first-child,
+#itemDetailPage .parentName > bdi:first-child {
+    opacity: 0;
+}
+.hide + .detailPageWrapperContainer .itemName > bdi:first-child,
+.hide + .parentName > bdi:first-child {
+    opacity: 1 !important;
+}
+/* Detail section layout */
+.detailSection {
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+}
+.detailSection .detailSectionContent {
+    -webkit-box-ordinal-group: 1;
+    -moz-box-ordinal-group: 1;
+    box-ordinal-group: 1;
+}
+.detailSection .recordingFields,
+.detailSection .trackSelections {
+    -webkit-box-ordinal-group: 2;
+    -moz-box-ordinal-group: 2;
+    box-ordinal-group: 2;
+    display: none;
+}
+.detailSection .itemDetailsGroup {
+    -webkit-box-ordinal-group: 4;
+    -moz-box-ordinal-group: 4;
+    box-ordinal-group: 4;
+}
+/* Description and content styling */
+.detailPagePrimaryContainer {
+    font-size: 115% !important;
+}
+.detailSectionContent {
+    margin-top: -2vw !important;
+    padding: 0vw 0vw 0.5vw 0vw !important;
+}
+.detailSectionContent .tagline {
+    font-weight: bold;
+    font-size: 150% !important;
+    margin-bottom: 0.3vh;
+}
+#itemDetailPage .tagline {
+    border-left: 0.25em solid rgb(var(--primary));
+    padding: 0 0.5em;
+}
+.detailSectionContent .detail-clamp-text,
+.detailSectionContent .overview {
+    font-weight: normal;
+    font-size: 130% !important;
+    margin-top: 0.4em;
+}
+.detail-clamp-text {
+    -webkit-line-clamp: 5 !important;
+}
+a.overview-expand.emby-button {
+    font-size: 110%;
+}
+/* Box art */
+.detailImageContainer .card {
+    left: auto !important;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 25vw;
+}
+.detailImageContainer .card {
+    display:none;
+    max-height: 80vh;
+    max-width: 15vw;
+    position: absolute !important;
+    top: 85%  !important;
+    z-index: 3;
+}
+.detailImageContainer.padded-left .card.portraitCard {
+    margin-left: auto; /* Pushes it to the right */
+}
+.detailPageContent {
+    padding-left: 3.5vw !important;
+}
+/* ==========================================================================
+   Card and Hover Effects
+   ========================================================================== */
+
+/* TV: remove thick blue focus ring on item cards */
+.layout-tv .card:focus,
+.layout-tv .card:focus-within,
+.layout-tv .card.show-focus:focus {
+  outline: none !important;
+}
+
+/* Neutralize common inner elements that get the blue border */
+.layout-tv .card:focus .cardScalable,
+.layout-tv .card:focus .visualCardBox,
+.layout-tv .card:focus .cardImageContainer,
+.layout-tv .card.show-focus:focus .cardScalable,
+.layout-tv .card.show-focus:focus .visualCardBox,
+.layout-tv .card.show-focus:focus .cardImageContainer {
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+/* Card hover animations with backlight effect */
+.cardBox {
+    position: relative;
+      margin-left: .7em !important;
+    margin-right: .7em !important;
+}
+
+/* Create the backlight effect */
+.cardBox::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    /* Adjust bottom to only cover image area */
+    bottom: 15%;
+    z-index: -1;
+    border-radius: inherit;
+    transform: scale(0.95);
+    filter: blur(15px);
+    background: linear-gradient(270deg, #568495, #6b35a9);
+    background-size: 200% 200%;
+    opacity: 0;
+    transition: all 0.3s ease;
+    animation: animateGlow 10s ease infinite;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    overflow: visible !important;
+
+}
+
+/* Show the glow on hover and focus */
+.card:hover .cardBox::before,
+.card.show-focus:focus .cardBox::before {
+    opacity: 0.7;
+    transform: scale(0.98);
+    overflow: visible !important;
+
+}
+
+/* Scale the card on hover and focus */
+.card:hover .cardBox,
+.card.show-focus:focus .cardBox {
+    transform: scale(1.05);
+
+    overflow: visible !important;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+.cardScalable .cardImageContainer {
+    contain: strict;
+    height: 100% !important;
+    width: 100% !important;
+    overflow: visible !important;
+
+}
+/* Prevent hover scale/backlight from being clipped on some browsers */
+.card,
+.cardBox,
+.cardScalable,
+.cardPadder,
+.cardPadder-overflowBackdrop,
+.cardImageContainer {
+    overflow: visible !important;
+
+}
+
+/* Bias growth to the right to avoid left-edge cutoff when scaling */
+.cardBox,
+.cardImageContainer {
+}
+@keyframes animateGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Hide specific card text elements */
+.card[data-collectiontype="boxsets"] .cardText.cardTextCentered.cardText-first,
+.card[data-collectiontype="movies"] .cardText.cardTextCentered.cardText-first,
+.card[data-collectiontype="tvshows"] .cardText.cardTextCentered.cardText-first, .card[data-collectiontype="playlists"] .cardText.cardTextCentered.cardText-first  {
+    display: none;
+}
+
+/* ==========================================================================
+   TV Layout Specific
+   ========================================================================== */
+.layout-tv {
+    font-size: 110% !important;
+}
+/*
+.layout-tv .card:focus .cardBox.visualCardBox,
+.layout-tv .card:focus .cardBox:not(.visualCardBox) .cardScalable {
+    border-color: rgba(var(--accent),.75) !important;
+    border-radius: 20px !important;
+    background-color: rgba(var(--accent),0.75);
+    box-shadow: 2px 3px 16px rgba(var(--accent),0.45);
+    backdrop-filter: blur(5px);
+}
+/* Cast thumbnails */
+.layout-tv #castContent .card.overflowPortraitCard {
+    font-size: 80% !important;
+}
+#castContent .card.overflowPortraitCard.personCard.card-hoverable.card-withuserdata,
+#castContent .card.overflowPortraitCard.personCard.card-withuserdata {
+    width: 4.2cm !important;
+    font-size: 90% !important;
+    max-height: 50% !important;
+}
+/* TV Title Page */
+.layout-tv #itemDetailPage:not(.noBackdrop) .detailPagePrimaryContainer {
+    width: 95vw !important;
+}
+/* ==========================================================================
+   Utility Classes and Hidden Elements
+   ========================================================================== */
+.btnReplay,
+.itemExternalLinks,
+.itemTags,
+.sidebarHeader {
+    display: none !important;
+}
+.starIcon {
+    color: rgba(var(--highlight), 0.8);
+}
+/* Make watched icon dark and transparent */
+.indicator { background: #00000058 !important; }
+/* Make count indicator icon dark and transparent */
+.countIndicator {background: #00000058;}
+.headerHomeButton {
+    display: none;
+}
+
+/* Fade Horizontal Scrollers */
+.emby-scroller {
+    padding-right: max(env(safe-area-inset-right),3.3%);
+    mask-image: linear-gradient( 90deg, transparent, #000 5%, #000 85%, transparent 100% );
+}
+
+.dialog .nowPlayingContextMenu, html {
+    background-color: #1010100f;
+    backdrop-filter: blur(10px);
+}
+
+/* ==========================================================================
+   Dialog Styling - Action Sheets and Form Dialogs
+   ========================================================================== */
+
+/* Create a backdrop overlay effect with enhanced blur */
+.dialog.actionSheet.opened::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;   
+    z-index: -1;
+    transition: all 0.2s ease-out;
+}
+/*slight blur effect on dialog background with darkening*/
+.dialogContainer {
+    backdrop-filter: blur(3px) brightness(0.9);
+    -webkit-backdrop-filter: blur(3px) brightness(0.9); /* For Webkit-based browsers */
+    background-color: rgba(32, 38, 62, 0.2); /* Fallback for browsers without backdrop-filter support */
+}
+
+/* Style admin preferences menu to match action sheets */
+.padded-left.padded-right.padded-bottom-page.padded-top .readOnlyContent {
+    background-color: #20263E;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5) !important;
+    max-width: 400px !important;
+    margin: auto !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    padding: 0.5rem !important;
+}
+
+/* Style section titles */
+.padded-left.padded-right.padded-bottom-page.padded-top .sectionTitle {
+    font-family: 'Quicksand', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 1.1em !important;
+    color: rgba(var(--primary), 0.9) !important;
+    margin-top: 1rem !important;
+    margin-bottom: 0.5rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding-bottom: 0.5rem !important;
+}
+
+/* Style menu items */
+.padded-left.padded-right.padded-bottom-page.padded-top .listItem {
+    border-radius: 6px !important;
+    margin-bottom: 0.25rem !important;
+    transition: all 0.2s ease-out !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    padding: 0.4em 0.6em !important;
+}
+
+.padded-left.padded-right.padded-bottom-page.padded-top .listItem:hover,
+.padded-left.padded-right.padded-bottom-page.padded-top .listItem:focus {
+    background-color: rgba(var(--primary), 0.2) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Style menu item icons */
+.padded-left.padded-right.padded-bottom-page.padded-top .listItemIcon {
+    color: rgba(var(--primary), 0.9) !important;
+    font-size: 1.2em !important;
+    margin-right: 0.5em !important;
+}
+
+/* Style menu item text */
+.padded-left.padded-right.padded-bottom-page.padded-top .listItemBodyText {
+    font-family: 'Quicksand', sans-serif !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
+    font-size: 0.9em !important;
+}
+/* Make the action sheet less intrusive */
+.dialog.actionSheet {
+    background-color: #20263E;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5) !important;
+    max-width: 400px !important;
+    margin: auto !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    top: 5vh !important;
+    bottom: 5vh !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    /* Animation removed as it breaks functionality */
+}
+
+/* Remove fullscreen styling */
+.dialog-fullscreen.actionsheet-fullscreen {
+    position: fixed !important;
+    border-radius: 16px !important;
+    width: 90% !important;
+    max-width: 400px !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Style the action sheet content - more condensed */
+.actionSheetContent {
+    padding: 0.5rem !important;
+}
+
+/* Style the action sheet scroller - more condensed */
+.actionSheetScroller {
+    padding: 0.25rem !important;
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+}
+
+.actionSheetScroller::-webkit-scrollbar {
+    width: 5px !important;
+}
+
+.actionSheetScroller::-webkit-scrollbar-thumb {
+    background: rgba(var(--primary), 0.5) !important;
+    border-radius: 10px !important;
+}
+
+.actionSheetScroller::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 10px !important;
+}
+
+/* Style the action sheet items - more compact */
+.actionSheetMenuItem {
+    border-radius: 6px !important;
+    margin-bottom: 0.25rem !important;
+    transition: all 0.2s ease-out !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    padding: 0.4em 0.6em !important;
+}
+
+.actionSheetMenuItem:hover,
+.actionSheetMenuItem:focus {
+    background-color: rgba(var(--primary), 0.2) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Style the action sheet menu item icons - more compact */
+.actionsheetMenuItemIcon {
+    color: rgba(var(--primary), 0.9) !important;
+    font-size: 1.2em !important;
+    margin-right: 0.5em !important;
+}
+
+/* Style the action sheet item text - more compact */
+.actionSheetItemText {
+    font-family: 'Quicksand', sans-serif !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
+    font-size: 0.9em !important;
+}
+
+/* Style the action sheet divider - more compact */
+.actionsheetDivider {
+    margin: 0.3rem 0 !important;
+    height: 1px !important;
+    background: transparent !important;
+}
+
+/* Style the close button - fixed dimensions */
+.btnCloseActionSheet {
+    position: absolute !important;
+    top: 0.5rem !important;
+    right: 0.5rem !important;
+    z-index: 1 !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 50% !important;
+    padding: 0.5rem !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: unset !important;
+    max-width: unset !important;
+}
+
+/* Fix close button icon */
+.btnCloseActionSheet .material-icons {
+    font-size: 1.5rem !important;
+    line-height: 1 !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+}
+
+/* Adjust buttons on subtitle search form */
+.subtitleSearchForm .btnSearchSubtitles {
+    margin-bottom: 2.5rem !important;
+  }
+  .subtitleSearchForm .btnOpenUploadMenu {
+    margin-bottom: 2.5rem !important;
+  }
+  .subtitleSearchForm  .button-submit{
+    margin: 0 !important;
+  }
+
+/* Responsive styles for dialogs */
+@media (max-width: 640px) {
+    /* Action sheet mobile styling */
+    .dialog.actionSheet {
+        width: 95% !important;
+        max-width: none !important;
+        border-radius: 12px !important;
+    }
+    
+    /* Form dialog mobile styling - match action sheet */
+    .formDialog {
+        width: 95% !important;
+        max-width: none !important;
+        border-radius: 12px !important;
+        top: 5vh !important;
+        bottom: 5vh !important;
+        max-height: 90vh !important;
+        overflow: auto !important;
+    }
+    
+    .formDialogHeader {
+        border-radius: 12px 12px 0 0 !important;
+        padding: 0.5rem !important;
+    }
+    
+    .formDialogContent {
+        padding: 0.5rem !important;
+        max-height: 70vh !important;
+    }
+    
+    /* Mobile checkbox styling */
+    .formDialog .emby-checkbox-label {
+        margin-bottom: 0.75rem !important;
+        padding: 0.25rem !important;
+    }
+    
+    .formDialog .checkboxList {
+        padding: 0.25rem !important;
+    }
+    
+    .formDialogFooter {
+        border-radius: 0 0 12px 12px !important;
+        padding: 0.5rem !important;
+        flex-direction: row !important; /* Keep buttons side by side */
+        flex-wrap: wrap !important;
+    }
+    
+    .formDialogFooter .formDialogFooterItem {
+        flex: 1 1 auto !important;
+        min-width: 100px !important;
+        margin: 0.25rem !important;
+    }
+}
+
+/* TV layout adjustments */
+.layout-tv .dialog.actionSheet {
+    max-width: 500px !important;
+    border-radius: 8px !important;
+}
+
+.layout-tv .actionSheetMenuItem {
+    padding: 0.5rem 0.75rem !important;
+    margin-bottom: 0.4rem !important;
+}
+
+/* TV layout adjustments for form dialogs - match action sheet */
+.layout-tv .formDialog {
+    max-width: 500px !important; /* Match action sheet width */
+    border-radius: 8px !important;
+}
+
+.layout-tv .formDialogHeader {
+    border-radius: 8px 8px 0 0 !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.layout-tv .formDialogContent {
+    padding: 0.75rem !important;
+}
+
+.layout-tv .formDialogFooter {
+    border-radius: 0 0 8px 8px !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.layout-tv .formDialog .button-submit,
+.layout-tv .formDialog .button-cancel,
+.layout-tv .formDialog .button-reset {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1.2em !important;
+   
+}
+
+/* Increase size of form elements for TV navigation */
+.layout-tv .formDialog .emby-input,
+.layout-tv .formDialog .emby-select,
+.layout-tv .formDialog .emby-textarea {
+    font-size: 1.2em !important;
+    margin-bottom: 0.75rem !important;
+}
+
+/* TV layout checkbox styling */
+.layout-tv .formDialog .emby-checkbox-label {
+    margin-bottom: 0.75rem !important;
+    padding: 0.5rem !important;
+}
+
+.layout-tv .formDialog .checkboxLabel {
+    font-size: 1.1em !important;
+    margin-left: 1.75rem !important;
+    margin-top: -1rem !important;
+}
+
+.layout-tv .formDialog .checkboxOutline {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+}
+
+.layout-tv .formDialog .checkboxIcon-checked,
+.layout-tv .formDialog .checkboxIcon-unchecked {
+    font-size: 1.5rem !important;
+}
+
+.layout-tv .formDialog .listItem {
+    padding: 0.5rem 0.75rem !important;
+    margin-bottom: 0.4rem !important;
+}
+
+/* ==========================================================================
+   Form Dialog Styling
+   ========================================================================== */
+
+/* We're not using a separate backdrop for form dialogs to make it feel like the same popup */
+/* The action sheet backdrop will remain visible behind the form dialog */
+
+/* Style the form dialog container to match action sheet */
+.formDialog {
+    background-color: #20263E; /* Exact match with action sheet color */
+    border-radius: 16px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5) !important;
+    max-width: 600px !important; /* Wider than action sheet for more content */
+    margin: auto !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    top: 5vh !important;
+    bottom: 5vh !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Style the form dialog header to match action sheet */
+.formDialogHeader {
+    background-color: transparent !important;
+    border-radius: 16px 16px 0 0 !important;
+    padding: 0.5rem 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.formDialogHeaderTitle {
+    font-family: 'Quicksand', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 1.1em !important;
+    margin: 0 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Style back button to match action sheet close button */
+.formDialogHeader .btnCancel,
+.formDialogHeader .btnBack {
+    color: rgba(255, 255, 255, 0.7) !important;
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 50% !important;
+    padding: 0.5rem !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: unset !important;
+    max-width: unset !important;
+}
+
+.formDialogHeader .material-icons {
+    font-size: 1.5rem !important;
+    line-height: 1 !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+}
+
+/* Style the form dialog content to match action sheet */
+.formDialogContent {
+    padding: 0.5rem !important;
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+}
+
+/* Style upload button and other icon buttons in forms */
+.formDialog .emby-select-iconbutton,
+.formDialog .btnOpenUploadMenu {
+    background-color: rgba(var(--primary), 0.6) !important;
+    border-radius: 50% !important;
+    margin-left: 0.5rem !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease-out !important;
+}
+
+.formDialog .emby-select-iconbutton:hover,
+.formDialog .btnOpenUploadMenu:hover {
+    background-color: rgba(var(--primary), 0.8) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.formDialog .emby-select-iconbutton .material-icons,
+.formDialog .btnOpenUploadMenu .material-icons {
+    font-size: 1.5rem !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.formDialogContent::-webkit-scrollbar {
+    width: 5px !important;
+}
+
+.formDialogContent::-webkit-scrollbar-thumb {
+    background: rgba(var(--primary), 0.5) !important;
+    border-radius: 10px !important;
+}
+
+.formDialogContent::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 10px !important;
+}
+
+/* Style the form dialog footer to match action sheet */
+.formDialogFooter {
+    background-color: transparent !important;
+    border-radius: 0 0 16px 16px !important;
+    padding: 0.75rem 1rem !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 0.5rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Style form inputs */
+.formDialog .inputContainer,
+.formDialog .selectContainer {
+    margin-bottom: 1rem !important;
+}
+
+.formDialog .inputLabel,
+.formDialog .selectLabel {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.formDialog .emby-input,
+.formDialog .emby-textarea {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.formDialog .emby-input:focus,
+.formDialog .emby-textarea:focus {
+    border-color: rgba(var(--primary), 1) !important;
+}
+
+/* Enhanced select dropdown styling */
+.formDialog .selectContainer {
+    position: relative !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Style flex container for select with button */
+.formDialog .flex {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.formDialog .flex .selectContainer {
+    flex-grow: 1 !important;
+    margin-right: 0.5rem !important;
+}
+
+.formDialog .flex-shrink-zero {
+    flex-shrink: 0 !important;
+}
+
+.formDialog .emby-select {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    padding-right: 2.5rem !important; /* Make room for the arrow */
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+}
+
+.formDialog .emby-select:focus {
+    border-color: rgba(var(--primary), 1) !important;
+}
+
+.formDialog .selectArrowContainer {
+    position: absolute !important;
+    right: 0.5rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    pointer-events: none !important;
+}
+
+.formDialog .selectArrow {
+    color: rgba(var(--primary), 0.8) !important;
+    font-size: 1.5rem !important;
+}
+
+/* Style checkboxes */
+.formDialog .emby-checkbox-label {
+    margin-bottom: 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.formDialog .checkboxLabel {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-family: 'Quicksand', sans-serif !important;
+    margin-left: 0.5rem !important;
+    font-size: 0.95em !important;
+}
+
+.formDialog .checkboxOutline {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 4px !important;
+}
+
+.formDialog .emby-checkbox:checked + span + .checkboxOutline {
+    border-color: rgba(var(--primary), 0.8) !important;
+    background-color: rgba(var(--primary), 0.2) !important;
+}
+
+.formDialog .checkboxIcon-checked {
+    color: rgba(var(--primary), 1) !important;
+}
+
+.formDialog .checkboxIcon-unchecked {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.formDialog .checkboxList {
+    padding: 0.5rem !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 8px !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Style buttons to match action sheet */
+.formDialog .button-submit {
+    background-color: rgba(var(--primary), 0.6) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease-out !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+}
+
+.formDialog .button-submit:hover,
+.formDialog .button-submit:focus {
+    background-color: rgba(var(--primary), 0.8) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.formDialog .button-cancel {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease-out !important;
+}
+
+.formDialog .button-cancel:hover,
+.formDialog .button-cancel:focus {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-2px) !important;
+}
+
+.formDialog .button-reset {
+    background-color: rgba(var(--cherry-red), 0.4) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease-out !important;
+}
+
+.formDialog .button-reset:hover,
+.formDialog .button-reset:focus {
+    background-color: rgba(var(--cherry-red), 0.6) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Style section headers and labels */
+.formDialog h2 {
+    font-family: 'Quicksand', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 1.1em !important;
+    color: rgba(var(--primary), 0.9) !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.formDialog .selectLabel,
+.formDialog .inputLabel,
+.formDialog .textareaLabel {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-family: 'Quicksand', sans-serif !important;
+    font-weight: 500 !important;
+}
+
+.formDialog .fieldDescription {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 0.85em !important;
+    margin-top: 0.25rem !important;
+    font-style: italic !important;
+}
+
+/* Style the paper list items */
+.formDialog .paperList .listItem {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px !important;
+    margin-bottom: 0.25rem !important;
+    transition: all 0.2s ease-out !important;
+    padding: 0.5rem !important;
+}
+
+.formDialog .paperList .listItem:hover {
+    background-color: rgba(var(--primary), 0.2) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+.formDialog .paperList .listItemBody {
+    margin-left: 0.5rem !important;
+}
+
+.formDialog .paperList .textValue {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-family: 'Quicksand', sans-serif !important;
+}
+
+.formDialog .paperList .listItemIcon {
+    color: rgba(var(--primary), 0.9) !important;
+    background-color: transparent !important;
+}
+
+/* Style buttons in list items */
+.formDialog .paperList .paper-icon-button-light {
+    color: rgba(255, 255, 255, 0.7) !important;
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 50% !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease-out !important;
+}
+
+.formDialog .paperList .paper-icon-button-light:hover {
+    background-color: rgba(var(--cherry-red), 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+.formDialog .paperList .paper-icon-button-light .material-icons {
+    font-size: 1.2rem !important;
+}
+
+.headerButton.headerButtonRight.headerUserButton.paper-icon-button-light {
+    display: inline-block !important;
+}
+
+/* Library Page - Align Posters to Center */
+.padded-right-withalphapicker {
+    padding-right: 2.5% !important;
+}
+
+
+/* Item Page - resize Subtitle bar */
+.trackSelections {
+    max-width: 22em;
+}
+
+/* Shrink and square (or round) cast thumbnails */
+#castContent .card.overflowPortraitCard.personCard.card-hoverable.card-withuserdata,
+#castContent .card.overflowPortraitCard.personCard.card-withuserdata {
+    width: 3.5cm !important;
+    font-size: 70% !important;
+}
+
+/* NOT SURE WHERE THIS GOES */
+
+
+#dialogToc .toc li a:hover {
+    color: #00a4dc;
+}
+/* Ensure consistent icon highlighting across all sections */
+.navMenuOption-selected,
+.lnkMediaFolder.navMenuOption-selected,
+.libraryPage:not(.allLibraryPage) .lnkMediaFolder[data-collectiontype="boxsets"],
+.libraryPage:not(.allLibraryPage) .navMenuOption[href*="collectionType=boxsets"] {
+    background-color: var(--menu-bg) !important;
+    border-left: 3px solid var(--menu-border) !important;
+}
+/* Keep icons white in all states */
+.navMenuOption i,
+.navMenuOption .material-icons,
+.navMenuOption .navMenuOptionIcon,
+.lnkMediaFolder i,
+.lnkMediaFolder .material-icons,
+.lnkMediaFolder .navMenuOptionIcon {
+    color: #fff !important;
+}
+/* Menu expansion states */
+.mainDrawer.focused,
+.mainDrawer:hover,
+.mainDrawer:focus-within {
+    width: 240px !important;
+    background-color: rgba(16, 16, 16, 0.25) !important;
+}
+/* Menu text visibility */
+.navMenuOptionText {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+}
+.mainDrawer.focused .navMenuOptionText,
+.mainDrawer:hover .navMenuOptionText,
+.mainDrawer:focus-within .navMenuOptionText {
+    display: inline-block;
+    opacity: 1;
+    transition: opacity 0.2s ease-in;
+}
+/* Menu items base styles */
+[dir="ltr"] .navMenuOption {
+    padding: 0.9em 0 0.9em .9em !important;
+    transition: background-color 0.2s ease-out;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    border-top-right-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+    margin: 0.1em 0 !important;
+    height: 3em !important;
+    box-sizing: border-box !important;
+}
+/* Menu item states */
+.navMenuOption:hover,
+.navMenuOption:focus,
+.navMenuOption.focused,
+.navMenuOption-selected,
+.navMenuOption.navMenuOption-selected,
+.lnkMediaFolder.navMenuOption-selected {
+    background-color: var(--menu-bg) !important;
+    border-left: 3px solid var(--menu-border) !important;
+}
+/* Menu icons - removed duplicate */
+/* Menu scrollbar */
+.mainDrawer-scrollContainer {
+    pointer-events: auto !important;
+    z-index: 999 !important;
+    margin-top: 95px !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.mainDrawer-scrollContainer::-webkit-scrollbar {
+    width: 4px;
+}
+.mainDrawer-scrollContainer::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+}
+.mainDrawer-scrollContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+/* Content Adjustments */
+.libraryPage:not(#editItemMetadataPage) {
+    margin-left: 70px !important;
+    transition: margin-left 0.3s ease-out;
+}
+/* Move library page content up */
+.libraryPage:not(.noSecondaryNavPage) {
+    padding-top: 2.5em !important;
+}
+.sectionTabs {
+    display: none;
+}
+/* Header Adjustments */
+.pageTitleWithLogo {
+    height: 30px !important;
+    width: 100px !important;
+    margin: 0 1em 0 0.5em !important;
+}
+[dir="ltr"] .pageTitle {
+    margin: 0 1em 0 0.5em !important;
+}
+/* Hide hamburger menu on desktop */
+.mainDrawerButton:not(.dashboardDocument) {
+    display: none;
+}
+/* Smooth transitions */
+.layout-desktop .touch-menu-la.transition {
+    transition: transform 0.24s ease-out, left 0.26s ease-out, -webkit-transform 0.24s ease-out !important;
+}
+/* Scrollbar adjustments already defined above */
+.mainDrawer .navMenuOption.emby-button.show-focus:focus,
+.mainDrawer .navMenuOption.show-focus:focus {
+    transform: none !important;
+    -webkit-transform: none !important;
+    z-index: 999 !important;
+}
+/* Hidden elements already defined above */
+
+
+/* ==========================================================================
+   Icon Changes
+   ========================================================================== */
+
+   @font-face {
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: 300;
+    src: url(https://cdn.jsdelivr.net/npm/material-symbols@latest/material-symbols-outlined.woff2) format('woff2');
+}
+
+.material-icons {
+    font-family: 'Material Symbols Outlined' !important;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    transition: font-variation-settings 320ms ease, color 320ms ease;
+}
+
+
+
+
+/* ==========================================================================
+   Vertical Menu
+   ========================================================================== */
+
+/* Show/hide button text based on menu state */
+.btnSelectView::after,
+.btnSort::after,
+.btnFilter::after {
+    content: attr(title);
+    margin-left: 0.5em;
+    opacity: 0;
+    color: rgba(255, 255, 255, 0.7) !important;
+    transition: opacity 0.2s ease-out;
+    white-space: nowrap;
+}
+
+.mainDrawer.focused ~ .libraryPage .btnSelectView::after,
+.mainDrawer.focused ~ .libraryPage .btnSort::after,
+.mainDrawer.focused ~ .libraryPage .btnFilter::after,
+.mainDrawer:hover ~ .libraryPage .btnSelectView::after,
+.mainDrawer:hover ~ .libraryPage .btnSort::after,
+.mainDrawer:hover ~ .libraryPage .btnFilter::after {
+    opacity: 1;
+}
+/* ==========================================================================
+   Vertical Menu
+   ========================================================================== */
+
+
+/* Override hide class for main drawer except during video playback */
+body:not(.hide-scroll) .mainDrawer.hide {
+    display: block !important;
+}
+
+/* Ensure menu is always accessible except during video playback */
+body:not(.hide-scroll) .mainDrawer {
+    position: fixed !important;
+    left: 0 !important;
+    width: 60px !important;
+    height: 100vh !important;
+    background-color: rgba(16, 16, 16, 0) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    z-index: 998 !important;
+    transition: width 0.3s ease-out, background-color 0.3s ease-out !important;
+    pointer-events: auto !important;
+}
+
+/* Make menu items consistently focusable across all pages except video */
+body:not(.hide-scroll) .mainDrawer .navMenuOption,
+body:not(.hide-scroll) .mainDrawer .lnkMediaFolder {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 999 !important;
+}
+
+/* Ensure menu items are always clickable/focusable except during video */
+body:not(.hide-scroll) .mainDrawer-scrollContainer {
+    pointer-events: auto !important;
+    z-index: 999 !important;
+    margin-top: 95px !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Force menu to be accessible on home page but not during video */
+body:not(.hide-scroll).homePage .mainDrawer,
+body:not(.hide-scroll).homePage .mainDrawer .navMenuOption,
+body:not(.hide-scroll).homePage .mainDrawer-scrollContainer {
+    pointer-events: auto !important;
+    z-index: 999 !important;
+}
+
+
+/* ==========================================================================
+   Vertical Menu Admin Dropdown
+   ========================================================================== */
+
+/* Advanced Options Group (Admin & User) */
+.adminMenuOptions {
+    position: relative;
+    margin-top: 3em !important; /* Add space for the toggle button */
+}
+
+/* Create toggle button using pseudo-element */
+.adminMenuOptions::before {
+    content: "\e8b9" !important;
+    font-family: 'Material Symbols Outlined', sans-serif;
+    position: absolute;
+    left: 0;
+    top: -2em; /* Move up to create space */
+    width: 100%;
+    height: 2em;
+    z-index: 1000;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    padding: 0.9em 0 0.9em .6em !important;
+    transition: background-color 0.2s ease-out, font-variation-settings 320ms ease;
+    border-left: 3px solid transparent;
+    border-top-right-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+    margin: 0.1em 0 !important;
+    box-sizing: border-box !important;
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Add hover/focus effect to match other menu items */
+.adminMenuOptions:hover::before,
+.adminMenuOptions:focus-within::before,
+.adminMenuOptions.show-focus:focus::before {
+    background-color: var(--menu-bg) !important;
+    border-left: 3px solid var(--menu-border) !important;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Hide menu items by default */
+.adminMenuOptions > .navMenuOption,
+.userMenuOptions > .navMenuOption {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.2s ease-out, max-height 0.2s ease-out;
+}
+
+/* Always hide sidebar headers */
+.userMenuOptions > .sidebarHeader,
+.adminMenuOptions > .sidebarHeader {
+    display: none !important;
+}
+
+/* Show both sections when hovering or focusing over admin section */
+.adminMenuOptions:hover > .navMenuOption,
+.adminMenuOptions:focus-within > .navMenuOption,
+.adminMenuOptions.show-focus:focus > .navMenuOption,
+.adminMenuOptions:hover ~ .userMenuOptions > .navMenuOption,
+.adminMenuOptions:focus-within ~ .userMenuOptions > .navMenuOption,
+.adminMenuOptions.show-focus:focus ~ .userMenuOptions > .navMenuOption,
+/* Removed sidebar header hover rules */
+/* Show when any admin menu item is selected */
+.adminMenuOptions > .navMenuOption:hover ~ .navMenuOption,
+.adminMenuOptions > .navMenuOption:focus-within ~ .navMenuOption,
+.adminMenuOptions > .navMenuOption.show-focus:focus ~ .navMenuOption,
+/* Show when any user menu item is selected */
+.userMenuOptions > .navMenuOption:hover ~ .navMenuOption,
+.userMenuOptions > .navMenuOption:focus-within ~ .navMenuOption,
+.userMenuOptions > .navMenuOption.show-focus:focus ~ .navMenuOption,
+/* Removed more sidebar header hover rules */
+.userMenuOptions > .navMenuOption:hover ~ .navMenuOption,
+.userMenuOptions > .navMenuOption:focus-within ~ .navMenuOption,
+.userMenuOptions > .navMenuOption.show-focus:focus ~ .navMenuOption {
+    opacity: 1;
+    max-height: 3em;
+}
+
+/* Show both sections when hovering or focusing over user section */
+.mainDrawer-scrollContainer:has(.userMenuOptions:hover) .adminMenuOptions > .navMenuOption,
+.mainDrawer-scrollContainer:has(.userMenuOptions:focus-within) .adminMenuOptions > .navMenuOption,
+.mainDrawer-scrollContainer:has(.userMenuOptions.show-focus:focus) .adminMenuOptions > .navMenuOption,
+.mainDrawer-scrollContainer:has(.userMenuOptions:hover) .userMenuOptions > .navMenuOption,
+.mainDrawer-scrollContainer:has(.userMenuOptions:focus-within) .userMenuOptions > .navMenuOption,
+.mainDrawer-scrollContainer:has(.userMenuOptions.show-focus:focus) .userMenuOptions > .navMenuOption,
+/* Removed final sidebar header hover rules */
+/* Show when any menu item in either section is selected */
+.mainDrawer-scrollContainer:has(.adminMenuOptions .navMenuOption:hover) .adminMenuOptions > .navMenuOption,
+.mainDrawer-scrollContainer:has(.adminMenuOptions .navMenuOption:focus-within) .adminMenuOptions > .navMenuOption,
+.mainDrawer-scrollContainer:has(.adminMenuOptions .navMenuOption.show-focus:focus) .adminMenuOptions > .navMenuOption,
+.mainDrawer-scrollContainer:has(.userMenuOptions .navMenuOption:hover) .userMenuOptions > .navMenuOption,
+.mainDrawer-scrollContainer:has(.userMenuOptions .navMenuOption:focus-within) .userMenuOptions > .navMenuOption,
+.mainDrawer-scrollContainer:has(.userMenuOptions .navMenuOption.show-focus:focus) .userMenuOptions > .navMenuOption {
+    opacity: 1;
+    max-height: 3em;
+}
+
+/* Keep the toggle button visible */
+.adminMenuOptions::before {
+    opacity: 1 !important;
+    display: flex !important;
+    text-rendering: auto;
+}
+
+/* ==========================================================================
+   Filter Controls in Vertical Menu
+   ========================================================================== */
+/* This section is currently disabled as it needs more work */
+
+/* Hide paging info and shuffle */
+.listPaging,
+.btnShuffle {
+    display: none !important;
+}
+
+
+
+/* Move Filter menu up a bit */
+.libraryPage {
+    padding-bottom: 5em !important;
+  margin-top: -3em !important;
+}
+
+/* But then move down the content on main page */
+.homeSectionsContainer {
+    margin-top: 3em !important;
+  }
+
+  
+/* Hide main drawer on login page and fix admin page blur */
+#loginPage .mainDrawer,
+#loginPage .mainDrawer.hide {
+    display: none !important;
+}
+
+/* Remove blur effect from admin page drawer */
+.mainDrawer-scrollContainer {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* ==========================================================================
+   Button Styles
+   ========================================================================== */
+
+
+.emby-button.show-focus:focus {
+    background: linear-gradient(-45deg, var(--gradient-1), var(--gradient-2));
+  text-shadow: 0 0 30px #fff;
+  color: rgba(255, 255, 255, 1);
+    box-shadow: 0 5px 15px rgba(var(--primary), 0.4);
+         transform: scale(1.05);
+  transition: all 0.2s ease-out;
+}
+
+.detailButton:active {
+    transform: scale(0.95);  
+}
+
+.detailButton.emby-button.show-focus:hover {
+    background: linear-gradient(-45deg, var(--gradient-1), var(--gradient-2));
+  text-shadow: 0 0 30px #fff;
+  color: rgba(255, 255, 255, 1);
+    box-shadow: 0 5px 15px rgba(var(--primary), 0.4);
+         transform: scale(1.05);
+  transition: all 0.2s ease-out;
+}
+
+.detailButton:active {
+    transform: scale(0.95);  
+}
+
+/*CHROME  FIX */
+
+.noBackdropTransparency .detailPageSecondaryContainer {
+    background-color: transparent;
+}
+.detailPageSecondaryContainer {
+    background: transparent !important;
+}
+
+.infoWrapper {
+    display: block;
+margin-bottom: 0px;
+z-index: auto;
+}
+
+  .mainDetailButtons.focuscontainer-x {
+    position: relative;
+z-index: auto;
+margin-top: 0px;
+margin-bottom: 0px;
+}
+
+  .detailPagePrimaryContainer.padded-left.padded-right.detailRibbon {
+    position: relative;
+z-index: auto;
+display: block;
+height: auto;
+}
+
+.cardOverlayContainer {
+    background-color: transparent !important;
+}
+
+ /* Fix profile picture to be circular */
+ .paper-icon-button-light > div {
+ display: block !important;
+ }
+
+/* ==========================================================================
+   Rename Playlists to Moods
+   ========================================================================== */
+
+/* Hide original "Playlists" text in sidebar */
+.navMenuOption[href*="playlists"] .navMenuOptionText {
+    font-size: 0 !important;
+}
+
+/* Replace with "Moods" */
+.navMenuOption[href*="playlists"] .navMenuOptionText::after {
+    content: "Moods";
+    font-size: 1rem;
+}
+
+/* Hide "Playlists" text in page titles */
+.pageTitle:has-text("Playlists"),
+h1:has-text("Playlists") {
+    font-size: 0 !important;
+}
+
+/* Replace page title */
+.libraryPage[data-collectiontype="playlists"] .pageTitle::after,
+.libraryPage[data-collectiontype="playlists"] h1::after {
+    content: "Moods";
+    font-size: 1.17em;
+    font-family: 'Quicksand', sans-serif;
+}
+
+/* Rename in library cards if shown */
+.lnkMediaFolder[data-collectiontype="playlists"] .navMenuOptionText {
+    font-size: 0 !important;
+}
+
+.lnkMediaFolder[data-collectiontype="playlists"] .navMenuOptionText::after {
+    content: "Moods";
+    font-size: 1rem;
+}
+
+.pluginMenuOptions {
+  display: none;
+}
+
+
+
+/* ==========================================================================
+   Jellyfin 10.11 Content Shift HotFix
+   ========================================================================== */
+   .layout-desktop [dir="ltr"] .detailRibbon,
+   .layout-tv [dir="ltr"] .detailRibbon {
+       padding-left: 0 !important;
+     }
+   
+   [dir="ltr"] .detailPagePrimaryContent {
+     padding-left: 0 !important;
+     }
+   
+     #itemDetailPage .detailPagePrimaryContainer .detailSectionContent {
+       padding-left: 0vw !important;
+     }
+   
+   .gradientbg {
+       background: var(--background-gradient);
+   }
+   
+
+/* ==========================================================================
+   Login Page Styling – Celluloid Consistency
+   ========================================================================== */
+
+/* Reuse animated backdrop from main page */
+body[data-page-id="loginPage"],
+body.page[data-page-id="loginPage"],
+body.loginPage {
+  position: relative;
+  overflow: hidden;
+  background: var(--background-gradient) !important;
+  background-size: 400% 400%;
+  animation: gradient-anim 15s ease infinite !important;
+  color: rgba(255,255,255,0.9);
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* Film grain overlay */
+body.loginPage::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: .15;
+  z-index: 0;
+}
+
+
+
+/* Logo / header spacing */
+#loginPage h1,
+#loginPage .pageTitle {
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  font-weight: 600;
+
+}
+
+
+/* Hover / focus glow for buttons (except the forgot password button) */
+#loginPage button:not(.btnForgotPassword):hover,
+#loginPage button:not(.btnForgotPassword):focus {
+  box-shadow: 0 0 15px rgba(var(--primary), 0.6);
+  transform: scale(1.05);
+}
+
+
+/* Input fields */
+#loginPage input[type="text"],
+#loginPage input[type="password"] {
+  background-color: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.9);
+  padding: 0.6rem 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  font-family: 'Quicksand', sans-serif;
+}
+
+#loginPage input:focus {
+  outline: none;
+  border-color: rgba(var(--primary),1);
+}
+
+
+/* Profile buttons */
+#loginPage button {
+    background: linear-gradient(-45deg, var(--gradient-1), var(--gradient-2));
+    border: none;
+    border-radius: 12px;
+    padding: 0.7rem 1rem;
+    color: #fff;
+    font-weight: 600;
+    font-family: 'Quicksand', sans-serif;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    margin: 0.4rem;
+  }
+  
+  /* Hover / focus glow */
+  #loginPage button:hover,
+  #loginPage button:focus {
+    box-shadow: 0 0 15px rgba(var(--primary), 0.6);
+    transform: scale(1.05);
+          transition: all 0.2s ease-out;
+
+  }
+  #loginPage button:active {
+    transform: scale(0.95);  
+}
+ /* 160% to get larger avatars. probably a terrible hack */
+#divUsers {
+    width: 160% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-left: -30% !important;    
+}
+/* Style user profile cards on login page */
+/* Reset all card elements to avoid unwanted glow effects */
+#loginPage #divUsers button,
+#loginPage #divUsers .card,
+#loginPage #divUsers .cardBox,
+#loginPage #divUsers .cardScalable,
+#loginPage #divUsers .cardPadder,
+#loginPage #divUsers .cardContent,
+#loginPage #divUsers .cardFooter {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: none !important;
+    border-radius: 50% !important;
+}
+
+/* Reset hover states */
+#loginPage #divUsers button:hover,
+#loginPage #divUsers button:focus,
+#loginPage #divUsers .card:hover,
+#loginPage #divUsers .card:focus,
+#loginPage #divUsers .cardBox:hover,
+#loginPage #divUsers .cardBox:focus,
+#loginPage #divUsers .cardScalable:hover,
+#loginPage #divUsers .cardScalable:focus {
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* Only apply effects to the image container */
+#loginPage #divUsers .cardImageContainer {
+    border-radius: 50% !important;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    transition: all 0.2s ease-out;
+    transform-origin: center;
+}
+#loginPage #divUsers .cardScalable
+{
+    border-radius: 50% !important;
+   
+}
+#loginPage #divUsers .cardBox:hover,
+#loginPage #divUsers .cardBox:focus
+{
+    transform: scale(1.05) !important; 
+        transition: all 0.5s ease-out;
+ 
+    
+}
+#loginPage #divUsers .cardImageContainer{
+     border-radius: 50% !important;
+   
+}
+#loginPage #divUsers .cardContent {
+     border: 2px blue solid;
+      border-radius: 50% !important;
+    
+}
+#loginPage #divUsers .cardImageContainer:hover {
+    
+    transform: scale(1.15);
+      transition: all 1s ease-out;
+    box-shadow: 0 0 15px rgba(var(--primary), 0.6);
+      border-radius: 50% !important;
+}
+
+#loginPage .cardFooter {
+    background-color: transparent !important;
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+    padding-top: 0.5rem;
+}
+
+/* Only style Forgot Password button as a minimal link */
+#loginPage .btnForgotPassword {
+  background: transparent !important;
+  color: rgba(255,255,255,0.7) !important;
+  text-decoration: underline !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+  font-size: 0.9em !important;
+  padding: 0.3em !important;
+  margin-top: 0.5em !important;
+}
+
+/* Hover effect for the forgot password link */
+#loginPage .btnForgotPassword:hover {
+  color: rgba(var(--primary),1) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Simple fade-in */
+body.loginPage {
+  animation: fadeIn 1s ease-out;
+}
+@keyframes fadeIn {
+  from {opacity:0;}
+  to {opacity:1;}
+}
+#loginPage {
+      background-image: url("https://raw.githubusercontent.com/ztffn/Jellyfin-Celluloid-Theme/main/Theme/assets/img/celluloid-marquee.webp") !important;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /*! padding: 20px; */
+}
+
+    .backgroundContainer.withBackdrop {
+        background-color: rgba(20, 20, 20, 0.2) !important;
+        background-image:
+            linear-gradient(to left, transparent 20%, rgba(20, 20, 20, 1) 80%, rgb(20, 20, 20) 90%),
+            linear-gradient(to bottom, transparent 40%, rgba(20, 20, 20, 0.1) 70%, rgb(20, 20, 20) 90%) !important;
+    }
+
+/* Form container styling */
+#loginPage .padded-left.padded-right.padded-bottom-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+    
+}
+
+/* Box container */
+#loginPage .readOnlyContent,
+#loginPage form {
+  width: 100%;
+  max-width: 380px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* Input fields */
+#loginPage input[type="text"],
+#loginPage input[type="password"] {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid #09a8e2;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+
+/* Buttons */
+#loginPage .emby-button {
+  margin-top: 16px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Checkbox alignment */
+#loginPage .checkboxLabel {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+body.hideMainDrawer .mainDrawer-scrollContainer {
+    display: none !important;
+   
+}
+/* Optional: Fade-in effect */
+#loginPage .readOnlyContent {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/*  Responsive Fix: Make sure it's centered on small screens */
+@media (max-width: 600px) {
+  #loginPage .readOnlyContent,
+  #loginPage form {
+    max-width: 100%;
+    padding: 20px;
+    margin: 0 10px;
+  }
+} 
+
+/* On hover/focus in nav, switch icons to filled variant */
+.navMenuOption:hover .material-icons,
+.navMenuOption:focus-within .material-icons,
+.navMenuOption.show-focus:focus .material-icons,
+.lnkMediaFolder:hover .material-icons,
+.lnkMediaFolder:focus-within .material-icons {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ==========================================================================
+   Controls • Library Toolbar (Play/Queue/Shuffle/New/Sort/Filter/More)
+   ========================================================================== */
+/* Library Page - remove vertical alpha Picker
+div.alphaPickerRow-vertical {
+   // display: none !important;
+  
+}
+    */ 
+/*   Library Page - scale vertical alpha Picker if visible */
+.alphaPicker-vertical.alphaPicker-tv {
+    font-size: 70%;
+    margin-top: 0.75rem !important;
+    
+  }
+  .alphaPicker-fixed {
+    top: 0 !important;
+    position: fixed;}
+
+/* Library (Folders) - Remove Shuffle and play all buttons 
+.btnShuffle.button-flat {
+    display: none;
+}
+*/
+
+/* Hover/focus tint */
+.listIconButton-autohide.paper-icon-button-light:hover,
+.listIconButton-autohide.paper-icon-button-light:focus,
+.listTextButton-autohide.emby-button:hover,
+.listTextButton-autohide.emby-button:focus {
+    background-color: rgba(var(--primary), 0.12) !important;
+    color: rgba(var(--primary), 1) !important;
+}
+
+/* Ensure inner material icon inherits tint */
+.listIconButton-autohide.paper-icon-button-light .material-icons,
+.listTextButton-autohide.emby-button .material-icons {
+    color: inherit !important;
+}
+
+ /* TV layout: circular icon buttons for better focus affordance   */
+.layout-tv .listIconButton-autohide.paper-icon-button-light {
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    border-radius: 50% !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  margin: 2rem !important;
+  margin-bottom: 0!important;
+  margin-top:  0!important;
+}
+
+.btnSort::after,
+.btnFilter::after {
+  content: none !important;
+}
+.layout-tv .listIconButton-autohide.paper-icon-button-light:hover,
+.layout-tv .listIconButton-autohide.paper-icon-button-light:focus {
+    background-color: rgba(var(--primary), 0.30) !important;
+    box-shadow: 0 0 12px rgba(var(--primary), 0.35) !important;
+}
+
+/* TV layout: text buttons keep theme tint without circles */
+.layout-tv .listTextButton-autohide.emby-button:hover,
+.layout-tv .listTextButton-autohide.emby-button:focus {
+    background-color: rgba(var(--primary), 0.12) !important;
+    color: rgba(var(--primary), 1) !important;
+}
+
+/* ==========================================================================
+   Detail Page • Button Icon Fill on Hover/Focus
+   ========================================================================== */
+/* Default outlined state for detail button icons */
+.detailButton .detailButton-icon {
+    color: inherit !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    transition: font-variation-settings 200ms ease, color 200ms ease;
+}
+
+/* Filled on hover/focus */
+.detailButton:hover .detailButton-icon,
+.detailButton:focus .detailButton-icon,
+.detailButton.show-focus:focus .detailButton-icon {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
