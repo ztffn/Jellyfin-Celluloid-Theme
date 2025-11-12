@@ -9,10 +9,14 @@
 ***A custom theme for <a href="https://jellyfin.org/">Jellyfin</a> inspired by light leaks, film grain, and the quiet magic of cinema. Designed for rich visuals, clean typography, and a minimal, immersive viewing experience.***
 
 ---
+> [!NOTE]
+> Beta Status: This CSS theme was made for personal use. It as many rough edges, and might not look good on your syste. Progress is slow, but you are invited to try it out and post issues to help bring it along - or better yet, contribute to it. It will leave beta when I'm satisfied with the experience.
+    
 ## 📣 Roadmap / Status
 
 - [x] Repository scaffolding & docs
 - [ ] Clean up initial Celluloid CSS
+- [ ] Move advanced features into desktop only
 - [ ] Patch for Jellyfin 10.11
 - [ ] Cross browser compatibility
 - [ ] Publish preview gallery
